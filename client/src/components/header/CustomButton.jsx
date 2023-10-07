@@ -1,13 +1,19 @@
-import { Box, Button, styled } from '@mui/material';
-import DehazeIcon from '@mui/icons-material/Dehaze';
+import { useState, useContext } from 'react';
+
+import { Box, Button, Typography, styled } from '@mui/material';
+
+import { DataContext } from '../../context/DataProvider';
+
+import LoginDialog from '../login/LoginDialog';
+import Profile from './Profile';
 
 const Wrapper = styled(Box)`
     display: flex;
     margin: 0 3% 0 auto;
-    & > div {
-        margin-left: 100px;
-        font-size: 16px;
-        aligh-items: center;
+    & > button, & > p {
+        margin-left: 60px;
+        font-size: 18px;
+        align-items: center;
     }
 `
 
@@ -23,12 +29,27 @@ const LoginButton = styled(Button)`
 `
 
 const CustomButtons = () => {
+
+    const [open, setOpen] = useState(false);
+
+    const { account, setAccount } = useContext(DataContext);
+
+    const openDialog = () => {
+        setOpen(true);
+    }
+
     return (
         <Wrapper>
-            <LoginButton varient="contained">Login</LoginButton>
-            <Box>
-                <DehazeIcon />
-            </Box>
+            <Typography>Home</Typography>
+            <Typography>ELearning</Typography>
+            <Typography>Courses</Typography>
+            <Typography>News</Typography>
+            <Typography>AboutUs</Typography>
+            {
+                account ? <Profile account={account} setAccount={setAccount} /> :
+                      <LoginButton varient="contained" onClick={() => openDialog()}>Login</LoginButton>
+            }
+            <LoginDialog open={open} setOpen={setOpen} />
         </Wrapper>
     )
 }
